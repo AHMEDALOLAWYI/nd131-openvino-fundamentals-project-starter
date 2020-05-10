@@ -1,0 +1,97 @@
+Project Instructions
+Now, you should be all set up and ready to get started on your People Counter app using the OpenVINO™ Toolkit. Although you are free to dive right into the starter code and work everything out on your own, we’ve also provided some additional helpful instructions below to help you along the way. First, we’ll cover the steps to get your code up and running, and then we’ll get into what to do in the write-up portion of the project.
+
+Project Instructions: Code
+As noted in the project introduction, there are two primary files in which you’ll work to implement the People Counter app - inference.py and main.py. The inference.py file is the suggested starting point, as you’ll need much of the code there to fully implement the TODO’s throughout main.py.
+
+To start, you’ll need to choose a model and utilize the Model Optimizer to begin.
+
+Choosing a Model & The Model Optimizer
+You will choose the model you want to work with in this project - the only requirement is that the model is not already one of the pre-converted Intermediate Representations already available from Intel®.
+
+Please provide a link for your reviewer to the original model you choose, as well as the what you entered into the command line to convert your model with the Model Optimizer. You only need to include the converted IR model in your submission, not the original.
+
+While what type of model you use is up to you to decide, you must be able to extract information regarding the number of people in the frame, how long they have been in frame, and the total amount of people counted from your model’s output. Models using bounding boxes or semantic masks as the output will likely be helpful in that regard, but feel free to use any model you think might be helpful here.
+
+Note that you may need to do additional processing of the output to handle incorrect detections, such as adjusting confidence threshold or accounting for 1-2 frames where the model fails to see a person already counted and would otherwise double count.
+
+If you are otherwise unable to find a suitable model after attempting and successfully converting at least three other models, you can document in your write-up what the models were, how you converted them, and why they failed, and then utilize any of the Intel® Pre-Trained Models that may perform better.
+
+Inference.py
+Start by taking a look through the starter code to familiarize yourself with it. In the file, you will implement parts of the Network class, which will be used in main.py to interact with the loaded, pre-trained model.
+You’ll actually be able to use code quite similar to what you implemented in the final exercise of the course, but using a new model and different information sent over MQTT.
+You do not have to exactly use the starter template. If you want to change up the functions within, feel free to do so.
+In load_model():
+Set a self.plugin variable with IECore
+If applicable, add a CPU extension to self.plugin
+Load the Intermediate Representation model
+Check whether all layers are supported, or use a CPU extension. If a given layer is not supported, let the user know which layers
+Load the model network into a self.net_plugin variable
+Implement get_input_shape() to return the shape of the input layer
+Implement exec_net() by setting a self.infer_request_handle variable to an instance of self.net_plugin.start_async
+Implement get_output() by handling how results are returned based on whether an output is provided to the function.
+Main.py
+Implement connect_mqtt() by creating and connecting to the MQTT client
+In infer_on_stream() load the model into a infer_network variable
+Implement handling video or image input, or note to the user that it was unable to use the input
+Use CV2 to read from the video capture
+Pre-process the image frame as needed for input into the network model
+Implement processing of the network output
+Extract any bounding boxes, semantic masks, etc. from the result - make sure to use prob_threshold if working with bounding boxes!
+If using bounding boxes, draw the resulting boxes with cv2.rectangle on the frame
+Update current_count as necessary
+Back in infer_on_stream(), calculate and send relevant information on count, total and duration to the MQTT server
+Send the frame (now including any relevant output information) to the FFmpeg server
+Separately, if the user input a single image, write out an output image.
+It’s been a lot of hard work, but now it’s time to check out your app, deployed at the edge!
+
+
+
+
+Running the App
+Sourcing the Environment
+When opening a new terminal window, in order to source the environment, use the command:
+
+source /opt/intel/openvino/bin/setupvars.sh -pyver 3.5
+Any new terminals you open will again need this command run.
+
+Starting the Servers
+Before running main.py, you will need to have the MQTT, FFmpeg and UI servers all up and running. If you are running your app on a local device, make sure you have followed the earlier set-up instructions so that all dependencies are installed.
+
+You’ll need terminals open for each of these. For each, cd into the main directory containing all of your People Counter app files.
+
+Note: You will need to run npm install in the webservice/server and webservice/ui directories if you have not already.
+
+From there:
+
+For the MQTT server:
+
+cd webservice/server/node-server
+node ./server.js
+For the UI:
+
+cd webservice/ui
+npm run dev
+For the FFPMEG server:
+
+sudo ffserver -f ./ffmpeg/server.conf
+Starting the App Itself
+As you may have noticed, there are a number of arguments that can be passed into main.py when run from a terminal. While you should make sure to check them out in the code itself, it’s important to note you’ll also want to add some additional commands to make sure the output image frames are sent to the FFmpeg server.
+
+The arguments for main.py can be entered as follows (you may need to specify python3 on your system):
+
+python main.py -i {path_to_input_file} -m {path_to_model} -l {path_to_cpu_extension} -d {device_type} -pt {probability_threshold}
+The arguments for FFmpeg can be entered as follows - note that we’ll include the values here that will work optimally with the FFmpeg server and UI instead of placeholders. If you have not updated the FFmpeg server.conf file, this will match to what is configured therein.
+
+ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+To run these two together, while you have the ffserver, MQTT server, and UI server already running through separate terminals, you can use a pipe symbol (|) to combine them as one. Here is an example, along with possible paths for main.py arguments included:
+
+python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m your-model.xml -l /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_sse4.so -d CPU -pt 0.6 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+Note: The primary CPU extension file differs in naming between Linux and Mac. On Linux, the name is libcpu_extension_sse4.so, while on Mac it is libcpu_extension.dylib.
+
+Viewing the App in Your Browser
+If you are in the classroom workspace, use the “Open App” button to view the app in the browser, or if working locally, navigate to http://0.0.0.0:3004 in your browser. You should be able to see the video stream with any relevant outputs (bounding boxes, semantic masks, etc.) onto the video. Additionally, you can click the icon in the upper right to expand to show some statistical information; clicking another icon under the existing charts on this new menu will expand the final piece of information.
+
+
+
+
