@@ -5,10 +5,16 @@ have a different format you prefer, feel free to use it as long as you answer al
 questions.
 
 ## Explaining Custom Layers
-
 The process behind converting custom layers involves...
-
 Some of the potential reasons for handling custom layers are...
+
+There is a list of known layers . Loading models inside OpenVINO application may reuslt in functions that have different operations such as loss functions. This will result in the custom layers contained in the topoloy and not included in the in known layers are calssfied as custom by the model optimizer because each supported framework has its own list of knownlayers.
+
+The model optimizer convert pre-trained models to feed them to the inference engine in the intermediate represenation form . The orignal framework can be Tensorflow, MXNet or Caffe. Hence, conversion is done via adding an extension to both the model optimiser and the inference engine during iplementatin custom layer of the model used. To register custom layer each supported framework is registered via its unique steps.
+
+In our model , tensorflow object detection model zoo is used and tensorflow layers are supported by the model optimiser so there is no actual need to handle any custome layers in this project as tensorflow model achieve suitable direct intermediate reprenesaion and does not present any unsupported layers at the time of the inference. 
+
+ 
 
 ## Comparing Model Performance
 
