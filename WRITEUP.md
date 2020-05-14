@@ -29,10 +29,18 @@ The inference time of the model pre- and post-conversion was...
 
 ## Assess Model Use Cases
 
-Some of the potential use cases of the people counter app are...
+Some of the potential use cases of the people counter app are : 
+There are many areas where a person detection/counting model can be used : 
+
+For retail people  couting model can play a role in protection against theft, understand peak times optimise store layout and organise merchandise in aisles.Hence, this model can assist the retail store in marketing , queue managment and staffing. 
+
+For safety the poople for example during covid-19 the stores can allow certain number of people entrance to the store to avoid crowding within the stores . Also it can be used in high risk areas where only certain number of peopel is allowed to be inside for example to allow easy evacuation such as condfined spaces to determine and check the number of staff who got inside the confied space. 
+
+For infrastructure palnning the model will allow us to understand how crowded are public places at a given time or how many people are using a particular street crossing everyday.  
 
 Each of these use cases would be useful because...
-
+By using the counting model we are able to get results about number of people count and duration that people spent in certain places, also we can define a spefic timw rhat the model count for example in bus doors the doors can be shut autotically after the specifided time is over and by using a threshold for a specific number of people for example in case of elevator that the elvevator give an alarm once the totoal number of people has been exceeded. 
+   
 ## Assess Effects on End User Needs
 
 Lighting, model accuracy, and camera focal length/image size have different effects on a
