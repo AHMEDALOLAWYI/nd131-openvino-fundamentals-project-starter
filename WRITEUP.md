@@ -1,9 +1,5 @@
 # Project Write-Up
 
-You can use this document as a template for providing your project write-up. However, if you
-have a different format you prefer, feel free to use it as long as you answer all required
-questions.
-
 ## Explaining Custom Layers
 The process behind converting custom layers involves...
 Some of the potential reasons for handling custom layers are...
@@ -16,7 +12,7 @@ In our model , tensorflow object detection model zoo is used and tensorflow laye
 
  
 
-## Comparing Model Performance
+## Comparing Model Performance.........
 
 My method(s) to compare models before and after conversion to Intermediate Representations
 were...
@@ -46,19 +42,33 @@ By using the counting model we are able to get results about number of people co
 Lighting, model accuracy, and camera focal length/image size have different effects on a
 deployed edge model. The potential effects of each of these are as follows...
 
-## Model Research
+Image size:There is a proportional relationship between iamge size and image resolution. The output result for a model with higher resolution will be much better. In contrast a mdoel with less resoultion will give less acccurate results but will consume less memory size. Hence, depending on the specfications of the machine the end eser is operating the results will differ so the end user cana accout for some delay with more accurate results for an image with higher resoltion and bigger image size. 
 
-[This heading is only required if a suitable model was not found after trying out at least three
-different models. However, you may also use this heading to detail how you converted 
-a successful model.]
+Lighting : Good predeictions require a place with good lighting provided and to enhance our results dark areas will reuslt in less accurate results. 
 
-In investigating potential people counter models, I tried each of the following three models:
+Model Accuracy : less accurate models will result in more invalid predictions and coutings as the end user deals with an application that is deployed for real time results we will requrie higher model accuracy for much accurate outcomes. 
 
-- Model 1: [Name]
-  - [Model Source]
-  - I converted the model to an Intermediate Representation with the following arguments...
-  - The model was insufficient for the app because...
-  - I tried to improve the model for the app by...
+Camera focal length: depending of the size of the place monitored by the cammera  we can decide wether we look for a camera with high focal lenght or low focal length. This is becuase a high focal lenght will result in narrow angle image and focus on spesfic object. On the other hand a camere with low focal length will result in a wider angle . So a wider place will require high focal cammera length but this will give less exctracted information about objects in camera. 
+
+## Model Research.......
+In order to get the application running I used two different models . One that is avaible from open-vino pretrained models and the other one is MobileNetSSD. For the purpose of the write up for this project for the openvnino model I used the toolkit to deploy it while for the MobileNetSSD I used my local machine to inference with opencv2. Hence , we will compare elapsed time and approximate fps for MobileNetSSD model while for openvino pretrained model a study will be conducted on .....
+
+In investigating potential people counter models, I tried each of the following two models:
+
+- Model 1: [MobileNetSSD]
+  - [Model Source]:https://drive.google.com/file/d/0B3gersZ2cHIxRm5PMWRoTkdHdHc/view
+  I did not convert this model into intermediate representartion instead I was trying to get results by doing inference only on opencv2 and python environment on my loacal machine. 
+  
+  The results for this mdoel were elapsed time of 32.63 and approximate 42.72 FPS . 
+  To get the output video I run the following command: 
+  
+  python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt \
+	--model mobilenet_ssd/MobileNetSSD_deploy.caffemodel \
+	--input videos/Pedestrian_Detect_2_1_1.mp4 --output output/output_01.avi
+ 
+ 
+ The result for the output video can be found here :  https://www.dropbox.com/s/bsi46q683l8e9ub/output_02.avi?dl=0
+ 
   
 - Model 2: [Name]
   - [Model Source]
