@@ -70,7 +70,22 @@ In investigating potential people counter models, I tried each of the following 
  The result for the output video can be found here :  https://www.dropbox.com/s/bsi46q683l8e9ub/output_02.avi?dl=0
  
   
-- Model 2: [Name]
+- Model 2: The model is coverted using the openvnio toolkit and the inference is done through openvino 
+In order to feed the model the inference engine we have to converete it to the intermediate representation (IR) . Here we are using SSD MobileNet V2 COCO from Tensorflow. Firstly we download the model in the workspace by using the following command: 
+
+wget http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v2_coco_2018_03_29.tar.gz
+ 
+ Next tp the download of the model to the workspace , it has to be extracted using the follwoing command: 
+ 
+ tar -xvf ssd_mobilenet_v2_coco_2018_03_29.tar.gz 
+ 
+Following extacting the files we generate our xml file and bin file using the following command: 
+
+python /opt/intel/openvino/deployment_tools/model_optimizer/mo.py --input_model frozen_inference_graph.pb --tensorflow_object_detection_api_pipeline_config pipeline.config --reverse_input_channels --tensorflow_use_custom_operations_config /opt/intel/openvino/deployment_tools/model_optimizer/extensions/front/tf/ssd_v2_support.json
+
+Once we success converting our model succedded a message will be shown stating there are two files generated which are xml file and bin file also the time it took around 72.00 seconds to acheive the conversion process.  
+
+
   - [Model Source]
   - I converted the model to an Intermediate Representation with the following arguments...
   - The model was insufficient for the app because...
