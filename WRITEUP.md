@@ -17,7 +17,7 @@ For accuracy the deploying of the model from the model zoo  and using the openvi
 
 The model size after conversion was 65.3 MB and before conversion 64.8 MB so there is a small difference between two sizes . It is noticed that the IR OpenVINO achieved smaller size which is ideal for internet of things devices to implement in due to memory restrictions. 
 
-In terms of inference time the mode from the open model zoo had less time than both the converted model and the opencv using python . This due to the fact that the model from open model zoo was built specifically to function on the OpenVino toolkit with no conversion needed .
+In terms of inference time the mode from the open model zoo had less time than both the converted model and the opencv using python . This due to the fact that the model from open model zoo was built specifically to function on the OpenVino toolkit with no conversion needed . By running the application without using the toolkit the average inference time was 139.40 second and while using the toolkit the average infernce time was found to be 90.2 seonds 
 
 
 ## Assess Model Use Cases
