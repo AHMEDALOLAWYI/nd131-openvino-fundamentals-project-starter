@@ -85,4 +85,5 @@ Once we success converting our model succeeded a message will be shown stating t
   - There was no need to convert the model as it was downloaded from the intel website. 
   - The model was good enough to count total people in frame , find average duration and working well on edge as well as cloud. 
   - It could be possible to improve the model accuracy and performance by running it on GPU or higher generation hardware. 
+  The video output when running on my local machine gave an output of 0.17 seconds avg time and 6 totla of people count please check vido on dropbox for running on UI https://www.dropbox.com/s/jh88fxzakfzjnlh/VID_20200618_113815.mp4?dl=0
 
